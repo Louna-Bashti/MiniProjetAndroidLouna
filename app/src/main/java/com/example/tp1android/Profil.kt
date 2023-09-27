@@ -1,5 +1,6 @@
 package com.example.tp1android
 
+import android.graphics.Movie
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -20,7 +21,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 
 @Composable
-fun ProfileScreen(classes: WindowSizeClass) {
+fun ProfileScreen(classes: WindowSizeClass, onNavigateToMovie: () -> Unit,) {
     val classeHauteur = classes.heightSizeClass
     val classeLargeur = classes.widthSizeClass
     when (classeLargeur) {
@@ -35,7 +36,7 @@ fun ProfileScreen(classes: WindowSizeClass) {
                 Greeting("Louna")
                 ImageChat()
                 Présentation()
-                Démarrer()
+                Démarrer(onNavigateToMovie)
             };
         }
 
@@ -58,7 +59,7 @@ fun ProfileScreen(classes: WindowSizeClass) {
                 )
                 {
                     Présentation()
-                    Démarrer()
+                    Démarrer(onNavigateToMovie)
                 }
             }
 
@@ -114,9 +115,9 @@ fun Présentation() {
 }
 
 @Composable
-fun Démarrer() {
-    Button(onClick = { /*TODO*/ }, modifier = Modifier.clip(RoundedCornerShape(2.dp)),) {
-        Text(text = "Démarrer")
+fun Démarrer(onNavigateToMovie: () -> Unit) {
+    Button(onClick = onNavigateToMovie , modifier = Modifier.clip(RoundedCornerShape(2.dp)),) {
+        Text(text = "Accéder aux films")
 
     }
 }
