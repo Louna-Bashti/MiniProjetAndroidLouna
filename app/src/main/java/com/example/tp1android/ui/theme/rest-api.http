@@ -1,0 +1,9 @@
+GET https://api.themoviedb.org/3/search/trending/movie/week?api_key=6951006290ee3ea6cec168d02c857688&language=fr
+Accept = application.json
+
+GET https://api.themoviedb.org/3/
+
+GET https://api.themoviedb.org/3/person?api_key=6951006290ee3ea6cec168d02c857688
+Accept = application.json
+
+GET https://image.tmdp.org/t/p/w780/imageid
