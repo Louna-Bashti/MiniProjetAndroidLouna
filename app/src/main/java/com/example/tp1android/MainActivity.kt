@@ -9,7 +9,6 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.windowsizeclass.ExperimentalMaterial3WindowSizeClassApi
 import androidx.compose.material3.windowsizeclass.calculateWindowSizeClass
-import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -22,14 +21,14 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             TP1AndroidTheme {
-
                 // A surface container using the 'background' color from the theme
                 Surface(modifier = Modifier.fillMaxSize(), color = MaterialTheme.colorScheme.background) {
-                    val windowSizeClass = calculateWindowSizeClass(this);
+                    val windowSizeClass = calculateWindowSizeClass(this)
                     val navController = rememberNavController()
+                    val viewModel = MainViewModel()
                     NavHost(navController = navController, startDestination = "profile") {
                         composable("profile") {ProfileScreen(windowSizeClass, onNavigateToMovie = {navController.navigate("films")})}
-                        composable("films") {FilmsScreen()}
+                        composable("films") {FilmsScreen(viewModel)}
 
                     }
                 }
