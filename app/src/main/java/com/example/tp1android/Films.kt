@@ -45,18 +45,20 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import coil.compose.AsyncImage
 import org.intellij.lang.annotations.JdkConstants.HorizontalAlignment
 
-var searchMode = false
 
 @Composable
 fun FilmsScreen(viewModel: MainViewModel) {
 
+    var searchMode by remember {
+      mutableStateOf(false)
+    }
 
     val movies by viewModel.movies.collectAsState()
     LaunchedEffect(true) {
         viewModel.getMovies()
     }
     if (searchMode==true) {
-        SearchBarMovie(viewModel)
+        SearchBarMovie(viewModel) { searchMode = false}
     }
     else
     {
@@ -83,7 +85,7 @@ fun FilmsScreen(viewModel: MainViewModel) {
 
         }
 
-        ResearchButton () {}
+        ResearchButton ( {  searchMode = !searchMode })
     }
 
 
@@ -93,6 +95,8 @@ fun FilmsScreen(viewModel: MainViewModel) {
 @Composable
 fun MovieList(viewModel: MainViewModel) {
     val movies by viewModel.movies.collectAsState()
+
+
     LazyVerticalGrid(
         columns = GridCells.Adaptive(minSize = 180.dp), Modifier.padding(10.dp)
     ) {
@@ -122,7 +126,7 @@ fun MovieList(viewModel: MainViewModel) {
 @Composable
 fun ResearchButton(onClick: () -> Unit) {
     FloatingActionButton(
-        onClick = { searchMode = true },
+        onClick = { onClick() },
         containerColor = MaterialTheme.colorScheme.secondaryContainer,
         contentColor = MaterialTheme.colorScheme.secondary,
         shape = CircleShape,
@@ -140,7 +144,7 @@ fun ResearchButton(onClick: () -> Unit) {
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun SearchBarMovie(viewModel: MainViewModel) {
+fun SearchBarMovie(viewModel: MainViewModel, onClick: () -> Unit) {
     var text by rememberSaveable { mutableStateOf("") }
     var active by rememberSaveable { mutableStateOf(false) }
 
@@ -155,7 +159,11 @@ fun SearchBarMovie(viewModel: MainViewModel) {
                 .semantics { traversalIndex = -1f },
             query = text,
             onQueryChange = { text = it },
-            onSearch = { active = false },
+            onSearch = {
+                active = false
+
+                onClick
+                       },
             active = active,
             onActiveChange = { active = it },
             placeholder = { Text("Enter a movie keyword") },
@@ -183,9 +191,6 @@ fun SearchBarMovie(viewModel: MainViewModel) {
                     }
                 }
 
-            }
-            if (!active) {
-                searchMode = false
             }
         }
     }
