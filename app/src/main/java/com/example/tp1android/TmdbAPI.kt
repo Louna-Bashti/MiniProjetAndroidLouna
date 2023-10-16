@@ -11,8 +11,16 @@ class TmdbAPI {
 }
 interface Api {
     @GET("trending/movie/week")
-    suspend fun lastmovies(@Query("api_key") api_key: String): Affichage
+    suspend fun lastmovies(@Query("api_key") api_key: String): AffichageMovie
 
+    @GET("trending/tv/week")
+    suspend fun lastseries(@Query("api_key") api_key: String): AffichageSeries
+
+    @GET("trending/person/week")
+    suspend fun lastactors(@Query("api_key") api_key: String): AffichageActors
+
+    @GET("search/movie")
+    suspend fun searchmovies(@Query("api_key") api_key: String): AffichageMovie
 
 }
 

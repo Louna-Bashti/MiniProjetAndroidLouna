@@ -6,11 +6,25 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
 
 class MainViewModel : ViewModel() {
-    val movies= MutableStateFlow<List<MovieResult>>(listOf())
+    val movies = MutableStateFlow<List<MovieResult>>(listOf())
+    val series = MutableStateFlow<List<SeriesResult>>(listOf())
+    val actors = MutableStateFlow<List<ActorResult>>(listOf())
 
     fun getMovies() {
-        viewModelScope.launch{
-            movies.value= api.lastmovies("6951006290ee3ea6cec168d02c857688").results
+        viewModelScope.launch {
+            movies.value = api.lastmovies("6951006290ee3ea6cec168d02c857688").results
+        }
+    }
+
+    fun getSeries() {
+        viewModelScope.launch {
+            series.value = api.lastseries("6951006290ee3ea6cec168d02c857688").results
+        }
+    }
+
+    fun getActors() {
+        viewModelScope.launch {
+            actors.value = api.lastactors("6951006290ee3ea6cec168d02c857688").results
         }
     }
 }

@@ -21,6 +21,8 @@ import androidx.compose.material3.windowsizeclass.ExperimentalMaterial3WindowSiz
 import androidx.compose.material3.windowsizeclass.calculateWindowSizeClass
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.navigation.NavDestination.Companion.hierarchy
@@ -46,6 +48,9 @@ class MainActivity : ComponentActivity() {
                     val navController = rememberNavController()
                     val viewModel = MainViewModel()
                     Scaffold(
+                        topBar = {
+
+                        },
                         bottomBar = {
                             BottomNavigation {
                                 val navBackStackEntry by navController.currentBackStackEntryAsState()
@@ -54,7 +59,8 @@ class MainActivity : ComponentActivity() {
                                     icon = {
                                         Image(
                                             painterResource(id = R.drawable.movie_icon),
-                                            contentDescription = "movie icon"
+                                            contentDescription = "movie icon",
+                                            colorFilter = ColorFilter.tint(Color.Companion.White)
                                         )
                                     },
                                     label = { Text(text = "Films") },
@@ -72,8 +78,10 @@ class MainActivity : ComponentActivity() {
                                 BottomNavigationItem(
                                     icon = {
                                         Image(
-                                            painterResource(id = R.drawable.movie_icon),
-                                            contentDescription = "movie icon"
+                                            painterResource(id = R.drawable.baseline_live_tv_24
+                                            ),
+                                            contentDescription = "series icon",
+                                            colorFilter = ColorFilter.tint(Color.Companion.White)
                                         )
                                     },
                                     label = { Text(text = "Séries") },
@@ -92,7 +100,8 @@ class MainActivity : ComponentActivity() {
                                     icon = {
                                         Image(
                                             painterResource(id = R.drawable.actors_icon),
-                                            contentDescription = "actor icon"
+                                            contentDescription = "actor icon",
+                                            colorFilter = ColorFilter.tint(Color.Companion.White)
                                         )
                                     },
                                     label = { Text(text = "Acteurs") },
@@ -118,8 +127,8 @@ class MainActivity : ComponentActivity() {
                                 onNavigateToMovie = { navController.navigate("films") })
                         }
                         composable("films") { FilmsScreen(viewModel) }
-                        composable("séries") {}
-                        composable("acteurs") {}}
+                        composable("séries") { SeriesScreen(viewModel)}
+                        composable("acteurs") { ActorScreen(viewModel)}}
 
 
                     }
