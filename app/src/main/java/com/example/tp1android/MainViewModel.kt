@@ -27,4 +27,25 @@ class MainViewModel : ViewModel() {
             actors.value = api.lastactors("6951006290ee3ea6cec168d02c857688").results
         }
     }
+
+    fun searchMovies(keyword: String)
+    {
+        viewModelScope.launch {
+            movies.value = api.searchmovies("6951006290ee3ea6cec168d02c857688", keyword).results
+        }
+    }
+
+    fun searchSeries(keyword: String)
+    {
+        viewModelScope.launch {
+            series.value = api.searchseries("6951006290ee3ea6cec168d02c857688", keyword).results
+        }
+    }
+    fun searchActors(keyword: String)
+    {
+        viewModelScope.launch {
+            actors.value = api.searchactors("6951006290ee3ea6cec168d02c857688", keyword).results
+        }
+    }
+
 }

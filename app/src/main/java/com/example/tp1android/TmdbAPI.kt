@@ -20,7 +20,13 @@ interface Api {
     suspend fun lastactors(@Query("api_key") api_key: String): AffichageActors
 
     @GET("search/movie")
-    suspend fun searchmovies(@Query("api_key") api_key: String): AffichageMovie
+    suspend fun searchmovies(@Query("api_key") api_key: String, @Query("query") keyword: String): AffichageMovie
+
+    @GET("search/tv")
+    suspend fun searchseries(@Query("api_key") api_key: String, @Query("query") keyword: String): AffichageSeries
+
+    @GET("search/actors")
+    suspend fun searchactors(@Query("api_key") api_key: String, @Query("query") keyword: String): AffichageActors
 
 }
 

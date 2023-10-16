@@ -47,96 +47,122 @@ class MainActivity : ComponentActivity() {
                     val windowSizeClass = calculateWindowSizeClass(this)
                     val navController = rememberNavController()
                     val viewModel = MainViewModel()
-                    Scaffold(
-                        topBar = {
+                    val navBackStackEntry by navController.currentBackStackEntryAsState()
+                    val currentDestination = navBackStackEntry?.destination
 
-                        },
-                        bottomBar = {
-                            BottomNavigation {
-                                val navBackStackEntry by navController.currentBackStackEntryAsState()
-                                val currentDestination = navBackStackEntry?.destination
-                                BottomNavigationItem(
-                                    icon = {
-                                        Image(
-                                            painterResource(id = R.drawable.movie_icon),
-                                            contentDescription = "movie icon",
-                                            colorFilter = ColorFilter.tint(Color.Companion.White)
-                                        )
-                                    },
-                                    label = { Text(text = "Films") },
-                                    selected = currentDestination?.hierarchy?.any { it.route == "films" } == true,
-                                    onClick =
-                                    {
-                                        navController.navigate("films") {
-                                            popUpTo(navController.graph.findStartDestination().id) {
-                                                saveState = true
-                                            }
-                                            launchSingleTop = true
-                                            restoreState = true
-                                        }
-                                    })
-                                BottomNavigationItem(
-                                    icon = {
-                                        Image(
-                                            painterResource(id = R.drawable.baseline_live_tv_24
-                                            ),
-                                            contentDescription = "series icon",
-                                            colorFilter = ColorFilter.tint(Color.Companion.White)
-                                        )
-                                    },
-                                    label = { Text(text = "Séries") },
-                                    selected = currentDestination?.hierarchy?.any { it.route == "séries" } == true,
-                                    onClick =
-                                    {
-                                        navController.navigate("séries") {
-                                            popUpTo(navController.graph.findStartDestination().id) {
-                                                saveState = true
-                                            }
-                                            launchSingleTop = true
-                                            restoreState = true
-                                        }
-                                    })
-                                BottomNavigationItem(
-                                    icon = {
-                                        Image(
-                                            painterResource(id = R.drawable.actors_icon),
-                                            contentDescription = "actor icon",
-                                            colorFilter = ColorFilter.tint(Color.Companion.White)
-                                        )
-                                    },
-                                    label = { Text(text = "Acteurs") },
-                                    selected = currentDestination?.hierarchy?.any { it.route == "acteurs" } == true,
-                                    onClick =
-                                    {
-                                        navController.navigate("acteurs") {
-                                            popUpTo(navController.graph.findStartDestination().id) {
-                                                saveState = true
-                                            }
-                                            launchSingleTop = true
-                                            restoreState = true
-                                        }
-                                    })
-
+                    /*
+                    if (currentDestination?.hierarchy?.any { it.route == "profile" } == true) {
+                        NavHost(navController = navController, startDestination = "profile") {
+                            composable("profile") {
+                                ProfileScreen(
+                                    windowSizeClass,
+                                    onNavigateToMovie = { navController.navigate("films") })
                             }
+                            composable("films") { FilmsScreen(viewModel)}
+                            composable("séries") { SeriesScreen(viewModel) }
+                            composable("acteurs") { ActorScreen(viewModel) }
                         }
-                    )
-                    {innerPadding -> NavHost(navController = navController, startDestination = "profile", modifier = Modifier.padding(innerPadding)) {
-                        composable("profile") {
-                            ProfileScreen(
-                                windowSizeClass,
-                                onNavigateToMovie = { navController.navigate("films") })
-                        }
-                        composable("films") { FilmsScreen(viewModel) }
-                        composable("séries") { SeriesScreen(viewModel)}
-                        composable("acteurs") { ActorScreen(viewModel)}}
+                    } else {
+                        */
+                        Scaffold(
+                            bottomBar = {
+                                BottomNavigation {
+
+                                    BottomNavigationItem(
+                                        icon = {
+                                            Image(
+                                                painterResource(id = R.drawable.movie_icon),
+                                                contentDescription = "movie icon",
+                                                colorFilter = ColorFilter.tint(Color.Companion.White)
+                                            )
+                                        },
+                                        label = { Text(text = "Films") },
+                                        selected = currentDestination?.hierarchy?.any { it.route == "films" } == true,
+                                        onClick =
+                                        {
+                                            navController.navigate("films") {
+                                                popUpTo(navController.graph.findStartDestination().id) {
+                                                    saveState = true
+                                                }
+                                                launchSingleTop = true
+                                                restoreState = true
+                                            }
+                                        })
+                                    BottomNavigationItem(
+                                        icon = {
+                                            Image(
+                                                painterResource(
+                                                    id = R.drawable.baseline_live_tv_24
+                                                ),
+                                                contentDescription = "series icon",
+                                                colorFilter = ColorFilter.tint(Color.Companion.White)
+                                            )
+                                        },
+                                        label = { Text(text = "Séries") },
+                                        selected = currentDestination?.hierarchy?.any { it.route == "séries" } == true,
+                                        onClick =
+                                        {
+                                            navController.navigate("séries") {
+                                                popUpTo(navController.graph.findStartDestination().id) {
+                                                    saveState = true
+                                                }
+                                                launchSingleTop = true
+                                                restoreState = true
+                                            }
+                                        })
+                                    BottomNavigationItem(
+                                        icon = {
+                                            Image(
+                                                painterResource(id = R.drawable.actors_icon),
+                                                contentDescription = "actor icon",
+                                                colorFilter = ColorFilter.tint(Color.Companion.White)
+                                            )
+                                        },
+                                        label = { Text(text = "Acteurs") },
+                                        selected = currentDestination?.hierarchy?.any { it.route == "acteurs" } == true,
+                                        onClick =
+                                        {
+                                            navController.navigate("acteurs") {
+                                                popUpTo(navController.graph.findStartDestination().id) {
+                                                    saveState = true
+                                                }
+                                                launchSingleTop = true
+                                                restoreState = true
+                                            }
+                                        })
+
+                                }
+                            }
+                        )
+                        { innerPadding ->
+                            NavHost(
+                                navController = navController,
+                                startDestination = "profile",
+                                modifier = Modifier.padding(innerPadding)
+                            ) {
+                                composable("profile") {
+                                    ProfileScreen(
+                                        windowSizeClass,
+                                        onNavigateToMovie = { navController.navigate("films") })
+                                }
+                                composable("films") { FilmsScreen(viewModel) }
+                                composable("séries") { SeriesScreen(viewModel) }
+                                composable("acteurs") { ActorScreen(viewModel) }
+                            }
 
 
+
+                        }
                     }
+
+
                 }
             }
         }
     }
-}
+/*}
+
+ */
 
 
 
