@@ -21,7 +21,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 
 @Composable
-fun ProfileScreen(classes: WindowSizeClass, onNavigateToMovie: () -> Unit,) {
+fun ProfileScreen(classes: WindowSizeClass, onNavigateToMovies: () -> Unit,) {
     val classeHauteur = classes.heightSizeClass
     val classeLargeur = classes.widthSizeClass
     when (classeLargeur) {
@@ -36,7 +36,7 @@ fun ProfileScreen(classes: WindowSizeClass, onNavigateToMovie: () -> Unit,) {
                 Greeting("Louna")
                 ImageChat()
                 Présentation()
-                Démarrer(onNavigateToMovie)
+                Démarrer(onNavigateToMovies)
             };
         }
 
@@ -59,7 +59,7 @@ fun ProfileScreen(classes: WindowSizeClass, onNavigateToMovie: () -> Unit,) {
                 )
                 {
                     Présentation()
-                    Démarrer(onNavigateToMovie)
+                    Démarrer(onNavigateToMovies)
                 }
             }
 
@@ -115,8 +115,8 @@ fun Présentation() {
 }
 
 @Composable
-fun Démarrer(onNavigateToMovie: () -> Unit) {
-    Button(onClick = onNavigateToMovie , modifier = Modifier.clip(RoundedCornerShape(2.dp)),) {
+fun Démarrer(onNavigateToMovies: () -> Unit) {
+    Button(onClick = onNavigateToMovies , modifier = Modifier.clip(RoundedCornerShape(2.dp)),) {
         Text(text = "Accéder aux films")
 
     }

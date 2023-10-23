@@ -3,6 +3,7 @@ package com.example.tp1android
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
 import retrofit2.http.GET
+import retrofit2.http.Path
 import retrofit2.http.Query
 
 class TmdbAPI {
@@ -27,6 +28,13 @@ interface Api {
 
     @GET("search/actors")
     suspend fun searchactors(@Query("api_key") api_key: String, @Query("query") keyword: String): AffichageActors
+
+    @GET("movie/{id}?append_to_response=credits")
+    suspend fun specificmovie(@Path("id") id: String, @Query("api_key") api_key: String): MovieDetails
+
+    @GET("tv/{id}?append_to_response=credits")
+    suspend fun specificserie(@Path("id") id: String, @Query("api_key") api_key: String): SerieDetails
+
 
 }
 

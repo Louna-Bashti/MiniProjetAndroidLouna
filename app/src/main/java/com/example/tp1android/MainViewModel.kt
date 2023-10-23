@@ -9,6 +9,9 @@ class MainViewModel : ViewModel() {
     val movies = MutableStateFlow<List<MovieResult>>(listOf())
     val series = MutableStateFlow<List<SeriesResult>>(listOf())
     val actors = MutableStateFlow<List<ActorResult>>(listOf())
+    val movie = MutableStateFlow(MovieDetails())
+    val serie = MutableStateFlow(SerieDetails())
+
 
     fun getMovies() {
         viewModelScope.launch {
@@ -16,9 +19,22 @@ class MainViewModel : ViewModel() {
         }
     }
 
+    fun getMovie(id : Int) {
+        viewModelScope.launch {
+            movie.value = api.specificmovie(api_key = "6951006290ee3ea6cec168d02c857688", id = id.toString())
+        }
+
+    }
+
     fun getSeries() {
         viewModelScope.launch {
             series.value = api.lastseries("6951006290ee3ea6cec168d02c857688").results
+        }
+    }
+
+    fun getSerie(id : Int) {
+        viewModelScope.launch {
+            serie.value = api.specificserie(api_key = "6951006290ee3ea6cec168d02c857688", id = id.toString())
         }
     }
 

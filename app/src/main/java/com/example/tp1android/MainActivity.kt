@@ -2,6 +2,7 @@ package com.example.tp1android
 
 
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.annotation.StringRes
@@ -50,6 +51,8 @@ class MainActivity : ComponentActivity() {
                     val navBackStackEntry by navController.currentBackStackEntryAsState()
                     val currentDestination = navBackStackEntry?.destination
 
+                    Log.v("xxx", currentDestination?.route ?: "pas de destination")
+
                     /*
                     if (currentDestination?.hierarchy?.any { it.route == "profile" } == true) {
                         NavHost(navController = navController, startDestination = "profile") {
@@ -64,102 +67,106 @@ class MainActivity : ComponentActivity() {
                         }
                     } else {
                         */
-                        Scaffold(
-                            bottomBar = {
-                                BottomNavigation {
+                    Scaffold(
+                        bottomBar = {
+                            BottomNavigation {
 
-                                    BottomNavigationItem(
-                                        icon = {
-                                            Image(
-                                                painterResource(id = R.drawable.movie_icon),
-                                                contentDescription = "movie icon",
-                                                colorFilter = ColorFilter.tint(Color.Companion.White)
-                                            )
-                                        },
-                                        label = { Text(text = "Films") },
-                                        selected = currentDestination?.hierarchy?.any { it.route == "films" } == true,
-                                        onClick =
-                                        {
-                                            navController.navigate("films") {
-                                                popUpTo(navController.graph.findStartDestination().id) {
-                                                    saveState = true
-                                                }
-                                                launchSingleTop = true
-                                                restoreState = true
-                                            }
-                                        })
-                                    BottomNavigationItem(
-                                        icon = {
-                                            Image(
-                                                painterResource(
-                                                    id = R.drawable.baseline_live_tv_24
-                                                ),
-                                                contentDescription = "series icon",
-                                                colorFilter = ColorFilter.tint(Color.Companion.White)
-                                            )
-                                        },
-                                        label = { Text(text = "Séries") },
-                                        selected = currentDestination?.hierarchy?.any { it.route == "séries" } == true,
-                                        onClick =
-                                        {
-                                            navController.navigate("séries") {
-                                                popUpTo(navController.graph.findStartDestination().id) {
-                                                    saveState = true
-                                                }
-                                                launchSingleTop = true
-                                                restoreState = true
-                                            }
-                                        })
-                                    BottomNavigationItem(
-                                        icon = {
-                                            Image(
-                                                painterResource(id = R.drawable.actors_icon),
-                                                contentDescription = "actor icon",
-                                                colorFilter = ColorFilter.tint(Color.Companion.White)
-                                            )
-                                        },
-                                        label = { Text(text = "Acteurs") },
-                                        selected = currentDestination?.hierarchy?.any { it.route == "acteurs" } == true,
-                                        onClick =
-                                        {
-                                            navController.navigate("acteurs") {
-                                                popUpTo(navController.graph.findStartDestination().id) {
-                                                    saveState = true
-                                                }
-                                                launchSingleTop = true
-                                                restoreState = true
-                                            }
-                                        })
+                                BottomNavigationItem(
+                                    icon = {
+                                        Image(
+                                            painterResource(id = R.drawable.movie_icon),
+                                            contentDescription = "movie icon",
+                                            colorFilter = ColorFilter.tint(Color.Companion.White)
+                                        )
+                                    },
+                                    label = { Text(text = "Films") },
+                                    selected = currentDestination?.hierarchy?.any { it.route == "films" } == true,
+                                    onClick =
+                                    {
+                                        navController.navigate("films") {
 
-                                }
+                                        }
+                                    })
+                                BottomNavigationItem(
+                                    icon = {
+                                        Image(
+                                            painterResource(
+                                                id = R.drawable.baseline_live_tv_24
+                                            ),
+                                            contentDescription = "series icon",
+                                            colorFilter = ColorFilter.tint(Color.Companion.White)
+                                        )
+                                    },
+                                    label = { Text(text = "Séries") },
+                                    selected = currentDestination?.hierarchy?.any { it.route == "séries" } == true,
+                                    onClick =
+                                    {
+                                        navController.navigate("séries") {
+
+                                        }
+                                    })
+                                BottomNavigationItem(
+                                    icon = {
+                                        Image(
+                                            painterResource(id = R.drawable.actors_icon),
+                                            contentDescription = "actor icon",
+                                            colorFilter = ColorFilter.tint(Color.Companion.White)
+                                        )
+                                    },
+                                    label = { Text(text = "Acteurs") },
+                                    selected = currentDestination?.hierarchy?.any { it.route == "acteurs" } == true,
+                                    onClick =
+                                    {
+                                        navController.navigate("acteurs") {
+
+                                        }
+                                    })
+
                             }
-                        )
-                        { innerPadding ->
-                            NavHost(
-                                navController = navController,
-                                startDestination = "profile",
-                                modifier = Modifier.padding(innerPadding)
-                            ) {
-                                composable("profile") {
-                                    ProfileScreen(
-                                        windowSizeClass,
-                                        onNavigateToMovie = { navController.navigate("films") })
-                                }
-                                composable("films") { FilmsScreen(viewModel) }
-                                composable("séries") { SeriesScreen(viewModel) }
-                                composable("acteurs") { ActorScreen(viewModel) }
+                        }
+                    )
+                    { innerPadding ->
+                        NavHost(
+                            navController = navController,
+                            startDestination = "profile",
+                            modifier = Modifier.padding(innerPadding)
+                        ) {
+                            composable("profile") {
+                                ProfileScreen(
+                                    windowSizeClass,
+                                    onNavigateToMovies = { navController.navigate("films") })
                             }
-
-
+                            composable("films") {
+                                FilmsScreen(
+                                    viewModel,
+                                    onNavigateToMovie = { navController.navigate("film/$it") })
+                            }
+                            composable("séries") {
+                                SeriesScreen(
+                                    viewModel,
+                                    onNavigateToSerie = { navController.navigate("serie/$it") })
+                            }
+                            composable("acteurs") { ActorScreen(viewModel) }
+                            composable("film/{id}") {
+                                FilmScreen(
+                                    it.arguments?.getString("id")?.toInt() ?: 0, viewModel
+                                )
+                            }
+                            composable("serie/{id}") {
+                                SerieScreen(
+                                    it.arguments?.getString("id")?.toInt() ?: 0, viewModel
+                                )
+                            }
 
                         }
                     }
-
-
                 }
+
+
             }
         }
     }
+}
 /*}
 
  */
